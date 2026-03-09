@@ -1,0 +1,62 @@
+# Leptos + Axum Monorepo Template
+# Customize: project name, dependencies, and [[workspace.metadata.leptos]] below
+
+[workspace]
+resolver = "2"
+members = ["app", "frontend", "server"]
+
+# Optimizations for release (applies to WASM and server)
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "z"
+
+[workspace.dependencies]
+# Leptos
+leptos = { version = "0.8" }
+leptos_meta = { version = "0.8" }
+leptos_router = { version = "0.8" }
+leptos_axum = { version = "0.8" }
+
+# Server
+axum = { version = "0.8", features = ["json", "macros"] }
+tokio = { version = "1", features = ["full"] }
+tower = { version = "0.5", features = ["full"] }
+tower-http = { version = "0.6", features = ["full"] }
+
+# Shared
+cfg-if = "1.0"
+console_error_panic_hook = "0.1"
+console_log = "1.0"
+http = "1.3"
+log = "0.4"
+simple_logger = "5.0"
+thiserror = "2.0"
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# =============================================================================
+# cargo-leptos configuration (see https://github.com/leptos-rs/cargo-leptos)
+# Customize: name, site-addr, style-file, assets-dir, env, etc.
+# =============================================================================
+
+[[workspace.metadata.leptos]]
+name = "app"
+bin-package = "server"
+lib-package = "frontend"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+style-file = "style/main.scss"
+assets-dir = "public"
+site-addr = "127.0.0.1:3000"
+reload-port = 3001
+end2end-cmd = "npx playwright test"
+end2end-dir = "end2end"
+browserquery = "defaults"
+watch = false
+env = "DEV"
+bin-features = []
+bin-default-features = false
+lib-features = []
+lib-default-features = false

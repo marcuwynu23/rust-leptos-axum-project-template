@@ -1,0 +1,26 @@
+# Build output (rebuilt inside image)
+target/
+
+# Git and IDE
+.git
+.gitignore
+.cursor
+.vscode
+*.swp
+*.swo
+
+# Scripts and docs (not needed in image)
+scripts/
+*.md
+.env
+.env.*
+!.env.example
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Misc
+**/node_modules/
+*.log

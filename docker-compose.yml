@@ -1,0 +1,15 @@
+# Leptos + Axum project template
+# Usage: docker compose up --build
+# App: http://localhost:3000
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - LEPTOS_SITE_ADDR=0.0.0.0:3000
+      - LEPTOS_ENV=PRODUCTION
+    # Optional: override site root if you mount custom site
+    # env_file: .env
+    restart: unless-stopped

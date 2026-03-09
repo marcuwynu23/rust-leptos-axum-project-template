@@ -1,0 +1,6 @@
+# Use nightly for Leptos (required for full features).
+# Customize: switch to stable when Leptos supports it if desired.
+[toolchain]
+channel = "nightly"
+components = ["rustfmt", "clippy"]
+targets = ["wasm32-unknown-unknown"]
