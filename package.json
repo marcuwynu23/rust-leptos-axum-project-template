@@ -1,0 +1,11 @@
+{
+  "name": "leptos-axum-template",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i style/src.css -o style/main.css --minify",
+    "watch:css": "tailwindcss -i style/src.css -o style/main.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

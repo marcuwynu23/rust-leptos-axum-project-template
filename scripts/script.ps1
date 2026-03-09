@@ -1,6 +1,6 @@
 # Leptos + Axum project script
 # Usage: pwsh scripts\script.ps1 <command>
-#   install  - one-time setup (rustup target, cargo-leptos, check sass)
+#   install  - one-time setup (rustup target, cargo-leptos, npm + Tailwind CSS)
 #   dev      - dev server with hot reload (cargo leptos watch)
 #   build    - release build (server + site)
 #   run      - run release server (after build)
@@ -20,7 +20,7 @@ Leptos + Axum script
 Usage: pwsh scripts\script.ps1 <command>
 
 Commands:
-  install     One-time setup: wasm32 target, cargo-leptos, sass check
+  install     One-time setup: wasm32 target, cargo-leptos, npm + Tailwind CSS
   dev         Start dev server with hot reload (cargo leptos watch)
   build       Release build (cargo leptos build --release)
   run         Run release server (cargo run -p server --release)
@@ -163,11 +163,13 @@ function Script-Install {
         }
     }
 
-    Write-Host "`n[3/3] Checking sass..." -ForegroundColor Yellow
-    if (Get-Command sass -ErrorAction SilentlyContinue) {
-        Write-Host "sass found: $(Get-Command sass | Select-Object -ExpandProperty Source)" -ForegroundColor Green
+    Write-Host "`n[3/3] npm + Tailwind CSS..." -ForegroundColor Yellow
+    if (Get-Command npm -ErrorAction SilentlyContinue) {
+        npm install
+        npm run build:css
+        Write-Host "Tailwind CSS built (style/main.css)" -ForegroundColor Green
     } else {
-        Write-Host "sass not found. Install for SCSS: choco install sass, or npm install -g sass, or https://sass-lang.com/install" -ForegroundColor Yellow
+        Write-Host "npm not found. Install Node.js (https://nodejs.org/) then run: npm install && npm run build:css" -ForegroundColor Yellow
     }
 
     Write-Host "`nDone. Run: pwsh scripts\script.ps1 dev" -ForegroundColor Green
@@ -175,12 +177,16 @@ function Script-Install {
 
 function Script-Dev {
     Write-Host "=== Dev server (cargo leptos watch) ===" -ForegroundColor Cyan
+    if (Get-Command npm -ErrorAction SilentlyContinue) {
+        if (-not (Test-Path "style\main.css")) { npm run build:css }
+    }
     Write-Host "Open http://127.0.0.1:3000" -ForegroundColor Gray
     cargo leptos watch
 }
 
 function Script-Build {
     Write-Host "=== Release build ===" -ForegroundColor Cyan
+    if (Get-Command npm -ErrorAction SilentlyContinue) { npm run build:css }
     cargo leptos build --release
     Write-Host "Server: target\server\release\server.exe" -ForegroundColor Green
     Write-Host "Site:   target\site\" -ForegroundColor Green

@@ -7,6 +7,7 @@ use leptos_meta::{provide_meta_context, Stylesheet, Title};
 
 pub use app::App;
 
+mod api;
 mod app;
 mod pages;
 

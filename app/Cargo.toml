@@ -5,12 +5,14 @@ edition = "2021"
 description = "Shared Leptos application (SSR + hydrate)"
 
 [dependencies]
+gloo-net = { workspace = true, optional = true }
 leptos.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
 leptos_axum = { workspace = true, optional = true }
+serde.workspace = true
 
 [features]
 default = []
-hydrate = ["leptos/hydrate"]
+hydrate = ["leptos/hydrate", "gloo-net"]
 ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "dep:leptos_axum"]

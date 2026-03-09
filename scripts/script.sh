@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Leptos + Axum project script (Linux/macOS)
 # Usage: bash scripts/script.sh <command>
-#   install  - one-time setup (rustup target, cargo-leptos, check sass)
+#   install  - one-time setup (rustup target, cargo-leptos, npm + Tailwind CSS)
 #   dev      - dev server with hot reload (cargo leptos watch)
 #   build    - release build (server + site)
 #   run      - run release server (after build)
@@ -18,7 +18,7 @@ Leptos + Axum script
 Usage: bash scripts/script.sh <command>
 
 Commands:
-  install     One-time setup: wasm32 target, cargo-leptos, sass check
+  install     One-time setup: wasm32 target, cargo-leptos, npm + Tailwind CSS
   dev         Start dev server with hot reload (cargo leptos watch)
   build       Release build (cargo leptos build --release)
   run         Run release server (cargo run -p server --release)
@@ -40,11 +40,13 @@ script_install() {
     echo -e "\n\033[33m[2/3] Installing cargo-leptos...\033[0m"
     cargo install cargo-leptos --locked
 
-    echo -e "\n\033[33m[3/3] Checking sass...\033[0m"
-    if command -v sass &>/dev/null; then
-        echo -e "\033[32msass found: $(command -v sass)\033[0m"
+    echo -e "\n\033[33m[3/3] npm + Tailwind CSS...\033[0m"
+    if command -v npm &>/dev/null; then
+        npm install
+        npm run build:css
+        echo -e "\033[32mTailwind CSS built (style/main.css)\033[0m"
     else
-        echo -e "\033[33msass not found. Install for SCSS: npm install -g sass, or https://sass-lang.com/install\033[0m"
+        echo -e "\033[33mnpm not found. Install Node.js (https://nodejs.org/) then run: npm install && npm run build:css\033[0m"
     fi
 
     echo -e "\n\033[32mDone. Run: bash scripts/script.sh dev\033[0m"
@@ -52,12 +54,16 @@ script_install() {
 
 script_dev() {
     echo -e "\033[36m=== Dev server (cargo leptos watch) ===\033[0m"
+    if command -v npm &>/dev/null && [[ ! -f style/main.css ]]; then
+        npm run build:css
+    fi
     echo -e "\033[90mOpen http://127.0.0.1:3000\033[0m"
     cargo leptos watch
 }
 
 script_build() {
     echo -e "\033[36m=== Release build ===\033[0m"
+    if command -v npm &>/dev/null; then npm run build:css; fi
     cargo leptos build --release
     echo -e "\033[32mServer: target/server/release/server\033[0m"
     echo -e "\033[32mSite:   target/site/\033[0m"

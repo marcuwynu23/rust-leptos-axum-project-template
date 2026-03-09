@@ -8,3 +8,5 @@ end2end/test-results/
 end2end/playwright-report/
 end2end/blob-report/
 *.log
+# Tailwind build output (run npm run build:css)
+style/main.css

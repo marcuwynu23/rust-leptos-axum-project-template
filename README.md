@@ -15,7 +15,7 @@ A **highly customizable** web project template using [Leptos](https://leptos.dev
 - **Rust** (nightly; see [rust-toolchain.toml](rust-toolchain.toml))
 - **wasm32 target**: `rustup target add wasm32-unknown-unknown`
 - **cargo-leptos**: `cargo install cargo-leptos --locked`
-- **dart-sass** (for SCSS): [Install](https://sass-lang.com/install) and ensure `sass` is on your `PATH`
+- **Node.js** (for Tailwind CSS): [Install](https://nodejs.org/) and ensure `npm` is on your `PATH`
 
 ## How to run
 
@@ -40,10 +40,9 @@ cargo install cargo-leptos --locked
   ```
 
 ```bash
-# 3. Install dart-sass (for style/main.scss)
-#    Windows: choco install sass  OR  npm install -g sass
-#    Mac:     brew install sass/sass/sass
-#    Or:      https://sass-lang.com/install
+# 3. Install deps and build Tailwind CSS (style/main.css)
+npm install
+npm run build:css
 ```
 
 **Development** (hot reload):
@@ -52,7 +51,7 @@ cargo install cargo-leptos --locked
 cargo leptos watch
 ```
 
-Then open **http://127.0.0.1:3000**. The server and assets (WASM/CSS) are built and served automatically.
+Then open **http://127.0.0.1:3000**. The server and assets (WASM/CSS) are built and served automatically. For CSS hot reload while editing `style/src.css` or Tailwind classes, run `npm run watch:css` in another terminal.
 
 **Production** (build once, then run the server):
 
@@ -104,7 +103,7 @@ Script help: `pwsh scripts\script.ps1 --help` or `bash scripts/script.sh --help`
 ├── frontend/               # WASM build only: tiny crate that calls hydrate() with app
 ├── server/                 # Axum server (SSR + /api routes)
 │   └── src/api.rs          # REST API handlers (e.g. GET /api/health)
-├── style/                  # Global SCSS (main.scss)
+├── style/                  # Tailwind: src.css → main.css (see package.json)
 ├── public/                 # Static assets (copied to site)
 ├── scripts/                # script.ps1 (Windows), script.sh (Linux/macOS)
 ├── .github/workflows/      # CI (build.yml)
@@ -117,7 +116,7 @@ Script help: `pwsh scripts\script.ps1 --help` or `bash scripts/script.sh --help`
 - **App name / site address / assets**: Edit `[workspace.metadata.leptos]` in [Cargo.toml](Cargo.toml).
 - **Env overrides**: Copy [.env.example](.env.example) to `.env` and set `LEPTOS_ENV`, `LEPTOS_SITE_ADDR`, etc.
 - **API routes**: Add handlers in [server/src/api.rs](server/src/api.rs); they are mounted at `/api`.
-- **Styles**: Edit [style/main.scss](style/main.scss) and adjust CSS variables.
+- **Styles**: Edit [style/src.css](style/src.css) and Tailwind classes in components; run `npm run build:css` (or `npm run watch:css` in dev).
 - **CI**: Adjust [.github/workflows/build.yml](.github/workflows/build.yml) (e.g. deploy, matrix).
 
 ## License
